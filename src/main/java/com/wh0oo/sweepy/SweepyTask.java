@@ -63,7 +63,7 @@ public class SweepyTask implements Runnable {
                 int logged = 0;
                 String dim = world.getRegistryKey().getValue().toString();
 
-                for (ItemEntity item : world.getEntitiesByClass(ItemEntity.class, e -> true)) {
+                for (ItemEntity item : world.getEntitiesByClass(ItemEntity.class)) {
                     scanned++;
                     if (item.age >= minItemAgeTicks) {
                         if (logged < LOG_MAX_PER_WORLD) {
