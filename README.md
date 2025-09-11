@@ -22,6 +22,7 @@ This repository was initialized with the official [Fabric Example Mod](https://g
 - **Java 21 or higher**: Required for Minecraft 1.21.8 mod development
 - **Git**: For version control
 - **IDE**: IntelliJ IDEA (recommended) or Eclipse with appropriate plugins
+- **Internet Access**: Required for downloading Minecraft and Fabric dependencies from maven.fabricmc.net
 
 ## Getting Started
 
@@ -34,7 +35,17 @@ git clone <repository-url>
 cd sweepy
 ```
 
-### 2. Import into IDE
+### 2. First Build (Important)
+
+Before opening in your IDE, run the first build to download dependencies:
+
+```bash
+./gradlew build
+```
+
+**Note**: If you encounter network issues accessing `maven.fabricmc.net`, ensure you have a stable internet connection and that your firewall/proxy allows access to Fabric's Maven repository.
+
+### 3. Import into IDE
 
 **For IntelliJ IDEA:**
 1. Open IntelliJ IDEA
@@ -112,6 +123,23 @@ To customize this template for your mod:
 - `./gradlew build` - Build the mod
 - `./gradlew clean` - Clean build artifacts
 - `./gradlew genSources` - Generate Minecraft source code for reference
+
+## Troubleshooting
+
+### Build Issues
+
+If you encounter build errors:
+
+1. **Network connectivity**: Ensure you can access `maven.fabricmc.net`
+2. **Java version**: Verify you're using Java 21 or higher with `java -version`
+3. **Clean build**: Try `./gradlew clean build`
+4. **Gradle cache**: Clear Gradle cache with `./gradlew clean --refresh-dependencies`
+
+### Common Issues
+
+- **"Plugin fabric-loom not found"**: This usually indicates network issues accessing the Fabric Maven repository
+- **Java version errors**: Make sure you have Java 21+ installed and set as your JAVA_HOME
+- **IDE import issues**: Try importing the `build.gradle` file directly rather than the project folder
 
 ## Resources
 
