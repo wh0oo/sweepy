@@ -64,12 +64,9 @@ public class SweepyTask implements Runnable {
                 int logged = 0;
                 String dim = world.getRegistryKey().getValue().toString();
 
-                Box searchBox = new Box(
-                        -30_000_000, world.getBottomY(), -30_000_000,
-                         30_000_000, world.getTopY(),  30_000_000
-                );
-
+                Box searchBox = new Box(-30_000_000, -2048, -30_000_000, 30_000_000, 4096, 30_000_000);
                 List<ItemEntity> items = world.getEntitiesByClass(ItemEntity.class, searchBox, e -> true);
+
                 for (ItemEntity item : items) {
                     scanned++;
                     if (item.age >= minItemAgeTicks) {
