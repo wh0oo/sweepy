@@ -15,7 +15,7 @@ public class SweepyLogger {
     private static final DateTimeFormatter TS = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public SweepyLogger(MinecraftServer server) {
-        Path logsDir = server.getRunDirectory().toPath().resolve("logs");
+        Path logsDir = server.getRunDirectory().resolve("logs");
         this.logFile = logsDir.resolve("sweepy.log");
         try {
             if (!Files.exists(logsDir)) Files.createDirectories(logsDir);
