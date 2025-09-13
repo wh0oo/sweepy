@@ -18,7 +18,7 @@ public class SweepyConfig {
     private static final String FILE_NAME = "sweepy.json";
 
     public static SweepyConfig loadOrCreate(MinecraftServer server) {
-        Path configDir = server.getRunDirectory().toPath().resolve("config");
+        Path configDir = server.getRunDirectory().resolve("config");
         Path file = configDir.resolve(FILE_NAME);
 
         try {
