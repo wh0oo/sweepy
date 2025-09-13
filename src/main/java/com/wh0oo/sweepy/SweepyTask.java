@@ -7,6 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -63,7 +64,13 @@ public class SweepyTask implements Runnable {
                 int logged = 0;
                 String dim = world.getRegistryKey().getValue().toString();
 
-                for (ItemEntity item : world.getEntitiesByClass(ItemEntity.class)) {
+                Box searchBox = new Box(
+                        -30_000_000, world.getBottomY(), -30_000_000,
+                         30_000_000, world.getTopY(),  30_000_000
+                );
+
+                List<ItemEntity> items = world.getEntitiesByClass(ItemEntity.class, searchBox, e -> true);
+                for (ItemEntity item : items) {
                     scanned++;
                     if (item.age >= minItemAgeTicks) {
                         if (logged < LOG_MAX_PER_WORLD) {
@@ -80,6 +87,7 @@ public class SweepyTask implements Runnable {
                         wouldRemoveTotal++;
                     }
                 }
+
                 lines.add(dim + " | scanned=" + scanned + " | wouldRemove=" + wouldRemoveWorld + (logged >= LOG_MAX_PER_WORLD ? " | (truncated)" : ""));
             }
 
