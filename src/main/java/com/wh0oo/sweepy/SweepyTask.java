@@ -47,20 +47,20 @@ public class SweepyTask implements Runnable {
         for (int warnPos : warnAtTicks) {
             if (pos == warnPos && !warnedThisCycle.contains(warnPos)) {
                 int secondsLeft = Math.max(1, (intervalTicks - warnPos) / 20);
-                broadcast("[Sweepy] Ground items would be removed in " + secondsLeft + " seconds (dry run).");
+                broadcast("[Sweepy] Ground items will be removed in " + secondsLeft + " seconds!");
                 warnedThisCycle.add(warnPos);
             }
         }
 
         if (pos == intervalTicks) {
-            int wouldRemoveTotal = 0;
+            int removedTotal = 0;
             List<String> lines = new ArrayList<>();
-            lines.add("Sweepy dry-run pass: interval=" + config.intervalSeconds + "s, warn=" + arr(config.warnSeconds)
+            lines.add("Sweepy pass: interval=" + config.intervalSeconds + "s, warn=" + arr(config.warnSeconds)
                     + ", minAge=" + config.minItemAgeSeconds + "s");
 
             for (World world : server.getWorlds()) {
                 int scanned = 0;
-                int wouldRemoveWorld = 0;
+                int removedWorld = 0;
                 int logged = 0;
                 String dim = world.getRegistryKey().getValue().toString();
 
@@ -80,16 +80,17 @@ public class SweepyTask implements Runnable {
                             lines.add(dim + " | age=" + seconds + "s | " + stack.getCount() + "x " + id + " @ (" + x + ", " + y + ", " + z + ")");
                             logged++;
                         }
-                        wouldRemoveWorld++;
-                        wouldRemoveTotal++;
+                        item.discard();
+                        removedWorld++;
+                        removedTotal++;
                     }
                 }
 
-                lines.add(dim + " | scanned=" + scanned + " | wouldRemove=" + wouldRemoveWorld + (logged >= LOG_MAX_PER_WORLD ? " | (truncated)" : ""));
+                lines.add(dim + " | scanned=" + scanned + " | removed=" + removedWorld + (logged >= LOG_MAX_PER_WORLD ? " | (truncated)" : ""));
             }
 
             logger.writeBlock(lines);
-            broadcast("[Sweepy] Dry run: would remove " + wouldRemoveTotal + " dropped items. See logs/sweepy.log");
+            broadcast("[Sweepy] Cleared " + removedTotal + " dropped items. See logs/sweepy.log");
             warnedThisCycle.clear();
         }
     }
